@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "./dto/login.dto";
 import { RegistrationDto } from "./dto/registration.dto";
@@ -16,4 +16,12 @@ export class AuthController {
     registration(@Body() userDto: RegistrationDto ){
          return this.authSevice.registration(userDto);
     }
+
+    @Get('user-info') 
+    async getUserInfo(@Req() request) {
+        const token = request.headers['authorization']?.split(' ')[1]; // Получаем токен из заголовка Authorization
+        // console.log( request.headers);
+        return this.authSevice.getUserInfo(token);
+    }
+    
 }
