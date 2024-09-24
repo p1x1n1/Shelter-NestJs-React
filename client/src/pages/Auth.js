@@ -39,6 +39,7 @@ const AuthPage = () => {
     setIsLoading(true);
     try {
       const response = await apiService.post('/auth/registration', values);
+      console.log(response); 
       if (response.token) {
         message.success('Регистрация успешна!');
         localStorage.setItem('token', response.token);

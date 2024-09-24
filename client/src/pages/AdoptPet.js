@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button, message } from 'antd';
 import { ApiService } from '../service/api.service'; 
+import { PROFILE } from '../utils/const';
 
 const apiService = new ApiService();
 
@@ -29,7 +30,7 @@ const AdoptionForm = () => {
   const handleSubmit = () => {
     // Здесь можно отправить заявку на усыновление
     message.success('Заявка на усыновление успешно отправлена!');
-    navigate('/'); // Переход на главную страницу или страницу успеха
+    navigate(PROFILE); // Переход на главную страницу или страницу успеха
   };
 
   if (loading) return <p>Загрузка...</p>;
@@ -43,7 +44,7 @@ const AdoptionForm = () => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Card
           title={pet.name}
-          cover={<img alt={pet.name} src={pet.imageUrl || 'placeholder.jpg'} />} // Добавьте URL изображения питомца
+          cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />} //  URL изображения питомца
           style={{ width: 300 }} // Задайте ширину карточки
         >
           <p>Возраст: {pet.age} лет</p>

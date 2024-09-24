@@ -20,6 +20,12 @@ export class Pet {
   @Column()
   characterDescription: string;//характер
 
+  @Column()
+  sex: boolean; // 0 -  male, 1 - female
+
+  @Column()
+  photo: string; 
+
   @ManyToOne(() => Breed, breed => breed.pets, { eager: true })
   breed: Breed;
 

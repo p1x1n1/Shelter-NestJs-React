@@ -3,7 +3,6 @@ import {Route,Routes,Navigate} from 'react-router-dom'
 import {authRoutes, publicRoutes} from "../utils/routes";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import { AUTH_URL } from '../utils/const';
 
 
 const AppRouter = observer(() => {

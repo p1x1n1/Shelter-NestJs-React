@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Tabs, Select, Card, Button, Row, Col, message } from 'antd';
+import React, { useState, useEffect,useContext } from 'react';
+import { Tabs, Select, Card, Button, Row, Col, message, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ApiService } from '../service/api.service'; 
+import { Context } from '../index';
+import { AUTH_URL } from '../utils/const';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -10,10 +12,13 @@ const apiService = new ApiService();
 
 const PetsCatalog = () => {
   const navigate = useNavigate();
+  const { user } = useContext(Context);
   const [pets, setPets] = useState([]);
   const [families, setFamilies] = useState([]);
   const [selectedFamily, setSelectedFamily] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   useEffect(() => {
     fetchPets();
@@ -45,7 +50,23 @@ const PetsCatalog = () => {
   };
 
   const handleAdopt = (pet) => {
-   navigate(`/adopt/${pet.id}`); // Переход на страницу оформления заявки с ID питомца
+    if (user.isAuth) {
+      // Если пользователь авторизован, переходим на страницу оформления заявки
+      navigate(`/adopt/${pet.id}`);
+    } else {
+      // Если не авторизован — показываем модальное окно
+      setIsModalVisible(true);
+    }
+  };
+
+  const handleOk = () => {
+    // Переход на страницу авторизации при нажатии кнопки "Авторизация"
+    navigate(AUTH_URL);
+  };
+
+  const handleCancel = () => {
+    // Закрытие модального окна при нажатии кнопки "Отмена"
+    setIsModalVisible(false);
   };
 
   const filteredPets = pets.filter((pet) =>
@@ -54,8 +75,13 @@ const PetsCatalog = () => {
 
   const renderPetCard = (pet) => (
     <Col span={8} key={pet.id}>
-      <Card title={pet.name} bordered={false} style={{ marginBottom: 16 }}>
+      <Card 
+      title={pet.name} 
+      cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />} //  URL изображения питомца
+      bordered={false} 
+      style={{ marginBottom: 16 }}>
         <p>Возраст: {pet.age} лет</p>
+        <p>Пол: {pet.sex === 0 ? 'Мужской' : 'Женский'}</p>
         <p>Порода: {pet.breed.name}</p>
         <p>Семейство: {pet.breed.family.name}</p>
         {pet.adoptionStatus.name === 'Ожидает семью' && (
@@ -106,6 +132,18 @@ const PetsCatalog = () => {
           </Row>
         </TabPane>
       </Tabs>
+
+      {/* Модальное окно */}
+      <Modal
+        title="Авторизация необходима"
+        visible={isModalVisible}
+        onOk={handleOk} // Кнопка "Авторизация" ведет на страницу авторизации
+        onCancel={handleCancel} // Кнопка "Отмена" закрывает окно
+        okText="Авторизация"
+        cancelText="Отмена"
+      >
+        <p>Для продолжения необходимо авторизоваться. Вы хотите перейти на страницу авторизации?</p>
+      </Modal>
     </div>
   );
 };

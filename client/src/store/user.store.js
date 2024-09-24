@@ -23,6 +23,9 @@ export default class UserStore {
     get user() {
         return this._user
     }
+    // getUserInfo() {
+    //     return this._user
+    // }
     async checkSession() {
         const token = localStorage.getItem('token');
         if (token) {
