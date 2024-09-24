@@ -110,6 +110,13 @@ const PetsCatalog = () => {
       </Select>
 
       <Tabs defaultActiveKey="1">
+        <TabPane tab="Ожидают семью" key="2">
+            <Row gutter={16}>
+              {filteredPets
+                .filter((pet) => pet.adoptionStatus.name === 'Ожидает семью')
+                .map(renderPetCard)}
+            </Row>
+        </TabPane>
         <TabPane tab="Забронированы" key="1">
           <Row gutter={16}>
             {filteredPets
@@ -117,13 +124,7 @@ const PetsCatalog = () => {
               .map(renderPetCard)}
           </Row>
         </TabPane>
-        <TabPane tab="Ожидают семью" key="2">
-          <Row gutter={16}>
-            {filteredPets
-              .filter((pet) => pet.adoptionStatus.name === 'Ожидает семью')
-              .map(renderPetCard)}
-          </Row>
-        </TabPane>
+        
         <TabPane tab="Забраны домой" key="3">
           <Row gutter={16}>
             {filteredPets
