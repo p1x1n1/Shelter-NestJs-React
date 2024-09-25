@@ -43,6 +43,15 @@ export class ApiService {
 		})
 	}
 	  
+	patch(url, data) {
+		return this.#makeRequest(url, {
+			headers: {//указывается что именно json
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data),
+			method: 'PATCH'
+		})
+	}
 	async getUserInfo(token) {
         const options = {
             method: 'GET',

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { PetService } from './pet.service';
 import { Pet } from './pet.entity';
 
@@ -21,7 +21,7 @@ export class PetController {
         return this.petService.create(petData);
     }
 
-    @Put(':id')
+    @Patch(':id')
     update(@Param('id') id: number, @Body() petData: Partial<Pet>) {
         return this.petService.update(id, petData);
     }

@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { Card, Button, message } from 'antd';
-import { ApiService } from '../service/api.service'; 
-import { PROFILE } from '../utils/const';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ApiService } from '../service/api.service';
+import { CONTRACT } from '../utils/const';
+import { observer } from 'mobx-react-lite';
+import { Context } from '../index';
 
 const apiService = new ApiService();
 
-const AdoptionForm = () => {
+const AdoptionForm = observer(() => {
+  const { user } = useContext(Context);
+  const userInfo = user.user;
   const { petId } = useParams();
   const navigate = useNavigate();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
+  const cardRef = useRef(null);
 
   useEffect(() => {
     fetchPetDetails();
@@ -19,7 +24,7 @@ const AdoptionForm = () => {
   const fetchPetDetails = async () => {
     setLoading(true);
     try {
-      const data = await apiService.get(`/pets/${petId}`); // Получаем информацию о питомце по ID
+      const data = await apiService.get(`/pets/${petId}`);
       setPet(data);
     } catch (error) {
       message.error('Ошибка при загрузке данных питомца!');
@@ -27,10 +32,19 @@ const AdoptionForm = () => {
     setLoading(false);
   };
 
-  const handleSubmit = () => {
-    // Здесь можно отправить заявку на усыновление
-    message.success('Заявка на усыновление успешно отправлена!');
-    navigate(PROFILE); // Переход на главную страницу или страницу успеха
+  const handleSubmit = async () => {
+    try {
+      await apiService.post('/contracts', {
+        client: userInfo,
+        pet: pet,
+      });
+      
+      message.success('Заявка на усыновление успешно отправлена!');
+      navigate(CONTRACT);
+    } catch (error) {
+      // Обработка ошибки и вывод сообщения danger
+      message.error(error.message || 'Произошла ошибка при отправке заявки.'); 
+    }
   };
 
   if (loading) return <p>Загрузка...</p>;
@@ -38,14 +52,13 @@ const AdoptionForm = () => {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Спасибо, что хотите дать питомцу дом!</h1>
-      <p>
-        Пожалуйста, заполните форму ниже, чтобы завершить процесс усыновления.
-      </p>
+      <p>Пожалуйста, заполните форму ниже, чтобы завершить процесс усыновления.</p>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Card
           title={pet.name}
-          cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />} //  URL изображения питомца
-          style={{ width: 300 }} // Задайте ширину карточки
+          cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />}
+          style={{ width: 300 }}
+          ref={cardRef} // Используем ref здесь
         >
           <p>Возраст: {pet.age} лет</p>
           <p>Порода: {pet.breed.name}</p>
@@ -60,6 +73,6 @@ const AdoptionForm = () => {
       </div>
     </div>
   );
-};
+});
 
 export default AdoptionForm;

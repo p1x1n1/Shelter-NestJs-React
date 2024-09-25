@@ -3,12 +3,15 @@ import { Button, Card, message, Spin } from 'antd';
 import { ApiService } from '../service/api.service'; // Ваш класс для работы с API
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite'; // Импортируем observer
+import { useNavigate } from 'react-router-dom';
+import { CONTRACT } from '../utils/const';
 
 const apiService = new ApiService();
 
 const ProfilePage = observer(() => { // Оборачиваем компонент в observer
   const { user } = useContext(Context);
   const userInfo = user.user;
+  const navigate = useNavigate();
 
   const handleAddPet = () => {
     message.info('Форма добавления питомца открыта!');
@@ -16,6 +19,7 @@ const ProfilePage = observer(() => { // Оборачиваем компонен�
 
   const handleCheckApplications = () => {
     message.info('Проверка заявок открыта!');
+    navigate(CONTRACT);
   };
 
 

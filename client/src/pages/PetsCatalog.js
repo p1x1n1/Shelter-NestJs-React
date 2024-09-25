@@ -109,7 +109,7 @@ const PetsCatalog = () => {
         ))}
       </Select>
 
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="2">
         <TabPane tab="Ожидают семью" key="2">
             <Row gutter={16}>
               {filteredPets

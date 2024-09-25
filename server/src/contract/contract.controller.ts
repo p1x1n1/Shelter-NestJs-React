@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, Patch, Query } from '@nestjs/common';
 import { ContractService } from './contract.service';
 import { Contract } from './contract.entity';
 
@@ -7,8 +7,8 @@ export class ContractController {
   constructor(private readonly contractService: ContractService) {}
 
   @Get()
-  findAll() {
-    return this.contractService.findAll();
+  findAll(@Query('login') login?: string) {
+    return this.contractService.findAll(login);
   }
 
   @Get(':id')
@@ -18,10 +18,11 @@ export class ContractController {
 
   @Post()
   create(@Body() contractData: Partial<Contract>) {
+    // console.log(contractData);
     return this.contractService.create(contractData);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: number, @Body() contractData: Partial<Contract>) {
     return this.contractService.update(id, contractData);
   }
