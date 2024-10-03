@@ -24,6 +24,9 @@ import { Employee } from './employee/employee.entity';
 import { Contract } from './contract/contract.entity';
 import { Breed } from './bread/bread.entity';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -38,7 +41,10 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    StatusModule, DepartmentModule, ContractModule, ClientModule, BreadModule, EmployeeModule, PetModule, FamilyModule, PostModule, AuthModule],
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
+    StatusModule, DepartmentModule, ContractModule, ClientModule, BreadModule, EmployeeModule, PetModule, FamilyModule, PostModule, AuthModule, FilesModule],
   controllers: [AppController, EmployeeController, PostController],
   providers: [AppService],
 })

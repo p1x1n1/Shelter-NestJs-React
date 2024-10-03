@@ -22,6 +22,7 @@ export class BreedService {
   }
 
   create(breedData: Partial<Breed>) {
+    console.log(breedData);
     const breed = this.breedRepository.create(breedData);
     return this.breedRepository.save(breed);
   }

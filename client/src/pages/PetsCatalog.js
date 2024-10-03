@@ -76,10 +76,10 @@ const PetsCatalog = () => {
   const renderPetCard = (pet) => (
     <Col span={8} key={pet.id}>
       <Card 
-      title={pet.name} 
-      cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />} //  URL изображения питомца
-      bordered={false} 
-      style={{ marginBottom: 16 }}>
+        title={pet.name} 
+        cover={<img alt={pet.name} src={process.env.REACT_APP_API_URL + pet.photo || 'placeholder.jpg'} />} //  URL изображения питомца
+        bordered={false} 
+        style={{ marginBottom: 16 }}>
         <p>Возраст: {pet.age} лет</p>
         <p>Пол: {pet.sex === 0 ? 'Мужской' : 'Женский'}</p>
         <p>Порода: {pet.breed.name}</p>
@@ -89,6 +89,10 @@ const PetsCatalog = () => {
             Забрать домой
           </Button>
         )}
+        {/* Кнопка для перехода на страницу с подробной информацией */}
+        <Button style={{ marginTop: 8 }} onClick={() => navigate(`/pets/${pet.id}`)}>
+          Подробнее
+        </Button>
       </Card>
     </Col>
   );
@@ -102,19 +106,23 @@ const PetsCatalog = () => {
         onChange={handleFamilyChange}
         allowClear
       >
-        {families.map(family => (
+        {families ? families.map(family => (
           <Option key={family.id} value={family.id}>
             {family.name}
           </Option>
-        ))}
+        )) : <></>}
       </Select>
 
       <Tabs defaultActiveKey="2">
         <TabPane tab="Ожидают семью" key="2">
             <Row gutter={16}>
-              {filteredPets
+              {filteredPets ? filteredPets
                 .filter((pet) => pet.adoptionStatus.name === 'Ожидает семью')
-                .map(renderPetCard)}
+                .map(renderPetCard) 
+                : 
+                <>
+                  <p>Нет животных в данной категории.</p>
+                </>}
             </Row>
         </TabPane>
         <TabPane tab="Забронированы" key="1">
@@ -125,10 +133,10 @@ const PetsCatalog = () => {
           </Row>
         </TabPane>
         
-        <TabPane tab="Забраны домой" key="3">
+        <TabPane tab="Нашли семью" key="3">
           <Row gutter={16}>
             {filteredPets
-              .filter((pet) => pet.adoptionStatus.name === 'Забран домой')
+              .filter((pet) => pet.adoptionStatus.name === 'Нашёл семью')
               .map(renderPetCard)}
           </Row>
         </TabPane>

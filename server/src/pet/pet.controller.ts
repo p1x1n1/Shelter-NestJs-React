@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { PetService } from './pet.service';
 import { Pet } from './pet.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('pets')
 export class PetController {
@@ -17,13 +18,16 @@ export class PetController {
     }
 
     @Post()
-    create(@Body() petData: Partial<Pet>) {
-        return this.petService.create(petData);
+    @UseInterceptors(FileInterceptor('image'))
+    create(@Body() petData: Partial<Pet>, @UploadedFile() image) {
+        console.log(petData,'image',image);
+        return this.petService.create(petData,image);
     }
 
     @Patch(':id')
-    update(@Param('id') id: number, @Body() petData: Partial<Pet>) {
-        return this.petService.update(id, petData);
+    @UseInterceptors(FileInterceptor('image'))
+    update(@Param('id') id: number, @Body() petData: Partial<Pet>, @UploadedFile() image) {
+        return this.petService.update(id, petData,image);
     }
 
     @Delete(':id')

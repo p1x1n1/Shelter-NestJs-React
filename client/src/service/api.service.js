@@ -26,7 +26,7 @@ export class ApiService {
 			method: 'POST'
 		})
 	}
-	postformData(url, formData) {
+	postFormData(url, formData) {
 		return this.#makeRequest(url, {
 		  body: formData,
 		  method: 'POST'
@@ -52,6 +52,14 @@ export class ApiService {
 			method: 'PATCH'
 		})
 	}
+
+	patchFormData(url, formData) {
+		return fetch(this.#apiPath + url, {
+		  body: formData,
+		  method: 'PATCH'
+		}).then(res => res.json());
+	  }
+	  
 	async getUserInfo(token) {
         const options = {
             method: 'GET',

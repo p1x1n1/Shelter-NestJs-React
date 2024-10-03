@@ -12,7 +12,7 @@ export class Pet {
   name: string;
 
   @Column()
-  age: number;
+  age: string;
 
   @Column()
   appearanceDescription: string;//внещность
@@ -26,6 +26,12 @@ export class Pet {
   @Column()
   photo: string; 
 
+  @Column()
+  sterilization: boolean; // стерилизован ли
+
+  @Column()
+  vaccinationStatus: boolean; // вакцины есть или нет
+
   @ManyToOne(() => Breed, breed => breed.pets, { eager: true })
   breed: Breed;
 
@@ -34,5 +40,10 @@ export class Pet {
 
   @OneToMany(()=> Contract, contract => contract.pet)
   contracts: Contract[];
+
+  constructor() {
+    // Устанавливаем значение по умолчанию, если не передано другое значение
+    this.adoptionStatus = { id: 2, name: 'Ожидает семью' } as Status;
+  }
 
 }

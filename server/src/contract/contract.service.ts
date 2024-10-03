@@ -36,7 +36,12 @@ export class ContractService {
     }
 
     // Проверка, есть ли у клиента уже контракты
-    const existingContracts = await this.contractRepository.find({ where: { client } });
+    const existingContracts = await this.contractRepository.find({
+      where: { 
+        client: client,  
+        signed: false           
+      }
+    });
     if (existingContracts.length > 0) {
       throw new Error("У клиента уже есть контракты.");
     }

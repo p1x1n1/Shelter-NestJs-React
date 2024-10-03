@@ -4,7 +4,7 @@ import { ApiService } from '../service/api.service'; // Ваш класс для
 import { Context } from '../index';
 import { observer } from 'mobx-react-lite'; // Импортируем observer
 import { useNavigate } from 'react-router-dom';
-import { CONTRACT } from '../utils/const';
+import { CONTRACT, FORMADD } from '../utils/const';
 
 const apiService = new ApiService();
 
@@ -15,6 +15,7 @@ const ProfilePage = observer(() => { // Оборачиваем компонен�
 
   const handleAddPet = () => {
     message.info('Форма добавления питомца открыта!');
+    navigate(FORMADD)
   };
 
   const handleCheckApplications = () => {
@@ -24,7 +25,7 @@ const ProfilePage = observer(() => { // Оборачиваем компонен�
 
 
   return (
-    <Card style={{ maxWidth: 400, margin: 'auto', marginTop: '100px' }}>
+    <Card style={{ maxWidth: 700, margin: 'auto', marginTop: '100px' }}>
       {console.log('user', user)}
       {console.log('userInfo', userInfo)}
       <h2>Профиль пользователя</h2>
@@ -36,7 +37,7 @@ const ProfilePage = observer(() => { // Оборачиваем компонен�
 
 
       {userInfo && userInfo.post ? (
-        <Button type="primary" onClick={handleAddPet} style={{ marginRight: '10px' }}>
+        <Button type="default" onClick={handleAddPet} style={{ marginRight: '10px' }}>
           Добавить питомца
         </Button>
       ) : null}
