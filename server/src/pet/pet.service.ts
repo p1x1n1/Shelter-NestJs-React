@@ -27,6 +27,16 @@ export class PetService {
 
   async create(petData: Partial<Pet>, image?: any) {
     const fileName = await this.fileService.createFile(image);
+    if (typeof petData.vaccinationStatus === 'string') {
+      petData.vaccinationStatus = petData.vaccinationStatus === 'true';
+    }
+    if (typeof petData.sterilization === 'string') {
+        petData.sterilization = petData.sterilization === 'true';
+    }
+    if (typeof petData.sex === 'string') {
+        petData.sex = petData.sex === 'true';  
+    }
+    console.log(petData);
     const pet = this.petRepository.create({...petData, photo: fileName});
     return this.petRepository.save(pet);
   }
@@ -34,6 +44,16 @@ export class PetService {
   async update(id: number, petData: Partial<Pet>, image?: any) {
     const pet = await this.petRepository.findBy({id});
     console.log(petData, pet )
+    if (typeof petData.vaccinationStatus === 'string') {
+      petData.vaccinationStatus = petData.vaccinationStatus === 'true';
+    }
+    if (typeof petData.sterilization === 'string') {
+        petData.sterilization = petData.sterilization === 'true';
+    }
+    if (typeof petData.sex === 'string') {
+        petData.sex = petData.sex === 'true';  
+    }
+    console.log(petData);
     if (image) {
       const oldFileName = pet[0].photo;
       this.fileService.deleteFile(oldFileName);

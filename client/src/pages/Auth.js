@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Form, Input, Button, Card, Tabs, message } from 'antd';
+import { Form, Input, Button, Card, Tabs, message, Checkbox } from 'antd';
 import { Context } from "../index";
 import { ApiService } from '../service/api.service'; // Ваш класс для работы с API
 
@@ -83,7 +83,8 @@ const AuthPage = () => {
           </Form>
         </TabPane>
         <TabPane tab="Регистрация" key="2">
-          <Form onFinish={handleRegistration}>
+          <Form 
+          onFinish={handleRegistration}>
             <Form.Item
               name="login"
               rules={[
@@ -137,6 +138,12 @@ const AuthPage = () => {
               ]}
             >
               <Input placeholder="Телефон (+7xxxxxxxxxx)" />
+            </Form.Item>
+            <Form.Item 
+            label='Согласие на обработку персональных данных'
+            valuePropName="checked"
+            rules={[{ required: true, message: 'Для продолжения необходимо разрешить обработку персональных данных ' }]}>
+              <Checkbox/>
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" loading={isLoading} block>

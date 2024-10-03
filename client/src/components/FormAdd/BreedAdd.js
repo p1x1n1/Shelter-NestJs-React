@@ -99,7 +99,8 @@ const BreedAdd = ({ breeds, families, fetchBreed }) => {
       >
         <Form
           layout="vertical"
-          initialValues={editingItem}
+        //   initialValues={editingItem}
+          form={form}
           onFinish={handleSave}
         >
           <Form.Item label="Название породы" name="name" rules={[{ required: true, message: 'Введите название породы' }]}>

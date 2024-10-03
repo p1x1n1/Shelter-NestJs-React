@@ -27,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
+import { SeedService } from './seed';
 
 @Module({
   imports: [
@@ -40,12 +41,20 @@ import * as path from 'path';
       entities:[Client,Post,Status,Pet,Family,Employee,Contract,Breed],
       autoLoadEntities: true,
       synchronize: true,
+      // logging: true,
     }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
     StatusModule, DepartmentModule, ContractModule, ClientModule, BreadModule, EmployeeModule, PetModule, FamilyModule, PostModule, AuthModule, FilesModule],
   controllers: [AppController, EmployeeController, PostController],
-  providers: [AppService],
+  providers: [AppService, SeedService],
 })
-export class AppModule {}
+export class AppModule {
+
+  constructor(private readonly seedService: SeedService) {}
+
+  async onModuleInit() {
+    await this.seedService.run();
+  }
+}

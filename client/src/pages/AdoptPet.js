@@ -56,7 +56,7 @@ const AdoptionForm = observer(() => {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Card
           title={pet.name}
-          cover={<img alt={pet.name} src={pet.photo || 'placeholder.jpg'} />}
+          cover={<img alt={pet.name} src={ process.env.REACT_APP_API_URL  + pet.photo || 'placeholder.jpg'} />}
           style={{ width: 300 }}
           ref={cardRef} // Используем ref здесь
         >
@@ -68,7 +68,7 @@ const AdoptionForm = observer(() => {
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Button type="primary" onClick={handleSubmit}>
-          Подтвердить усыновление
+          Подтвердить { pet.sex ? 'удочерение' : 'усыновление'}
         </Button>
       </div>
     </div>

@@ -35,10 +35,11 @@ const PetAdd = ({ pets, breeds, families, fetchPet }) => {
       form.setFieldsValue({
         name: item.name,
         breed: item.breed.id,
+        familyId: item.breed.family.id,
         age: item.age,
-        vaccinationStatus: item.vaccinationStatus,
-        sterilization: item.sterilization,
-        sex: item.sex,
+        vaccinationStatus: item.vaccinationStatus ? true : false,
+        sterilization: item.sterilization ? true : false,
+        sex: item.sex ? 'Женский' : 'Мужской',
         appearanceDescription: item.appearanceDescription,
         characterDescription: item.characterDescription,
         photo: item.photo,
@@ -57,7 +58,6 @@ const PetAdd = ({ pets, breeds, families, fetchPet }) => {
   };
 
   const handleSave = (values) => {
-    //to do проверка логических данных при добавлении
     const formData = new FormData();
     formData.append('name', values.name);
     formData.append('breed', values.breed);
@@ -136,6 +136,7 @@ const PetAdd = ({ pets, breeds, families, fetchPet }) => {
   const petColumns = [
     { title: 'Имя', dataIndex: 'name', key: 'name' },
     { title: 'Возраст', dataIndex: 'age', key: 'age' },
+    { title: 'Пол', dataIndex: 'sex', key: 'sex' , render: (sex) => sex ? 'Женский' : 'Мужской'},
     { title: 'Описание внешности', dataIndex: 'appearanceDescription', key: 'appearanceDescription' },
     { title: 'Характер', dataIndex: 'characterDescription', key: 'characterDescription' },
     { title: 'Порода', dataIndex: ['breed', 'name'], key: 'breed' },
@@ -171,38 +172,6 @@ const PetAdd = ({ pets, breeds, families, fetchPet }) => {
     },
   ];
 
-  const breedColumns = [
-    { title: 'Порода', dataIndex: 'name', key: 'name' },
-    { title: 'Семейство', dataIndex: ['family', 'name'], key: 'family' },
-    {
-      title: 'Действия',
-      key: 'actions',
-      render: (text, record) => (
-        <>
-          <Button onClick={() => showEditModal(record)}>Изменить</Button>
-          <Button danger style={{ marginLeft: 8 }} onClick={() => onDelete(record.id)}>
-            Удалить
-          </Button>
-        </>
-      ),
-    },
-  ];
-
-  const familyColumns = [
-    { title: 'Семейство', dataIndex: 'name', key: 'name' },
-    {
-      title: 'Действия',
-      key: 'actions',
-      render: (text, record) => (
-        <>
-          <Button onClick={() => showEditModal(record)}>Изменить</Button>
-          <Button danger style={{ marginLeft: 8 }} onClick={() => onDelete(record.id)}>
-            Удалить
-          </Button>
-        </>
-      ),
-    },
-  ];
 
   return (
     <>
@@ -218,7 +187,7 @@ const PetAdd = ({ pets, breeds, families, fetchPet }) => {
         <Form
           form={form}
           layout="vertical"
-          initialValues={editingItem}
+          // initialValues={editingItem}
           onFinish={handleSave}
         >
           <Form.Item

@@ -81,10 +81,10 @@ const PetsCatalog = () => {
         bordered={false} 
         style={{ marginBottom: 16 }}>
         <p>Возраст: {pet.age} лет</p>
-        <p>Пол: {pet.sex === 0 ? 'Мужской' : 'Женский'}</p>
+        <p>Пол: {pet.sex ? 'Женский' : 'Мужской'}</p>
         <p>Порода: {pet.breed.name}</p>
         <p>Семейство: {pet.breed.family.name}</p>
-        {pet.adoptionStatus.name === 'Ожидает семью' && (
+        {pet.adoptionStatus.name === 'Ожидает семью' && !(user?.user?.post) && (
           <Button type="primary" onClick={() => handleAdopt(pet)}>
             Забрать домой
           </Button>
